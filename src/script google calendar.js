@@ -28,7 +28,9 @@ const CONFIG_KEYS = {
 
   FORM_URL_UPDATE: "FORM_URL_UPDATE",
   FORM_URL_CIERRE: "FORM_URL_CIERRE",
-  FORM_PLACEHOLDER_TASKID: "FORM_PLACEHOLDER_TASKID"
+  FORM_PLACEHOLDER_TASKID: "FORM_PLACEHOLDER_TASKID",
+  
+  HOJA_CALENDARIOS: "HOJA_CALENDARIOS_COMPARTIDOS"
 };
 
 function esVerdadero_(valor) {
@@ -110,6 +112,35 @@ function leerConfigComoMapa_() {
   return mapa;
 }
 
+function leerCalendariosCompartidos_() {
+  const m = leerConfigComoMapa_();
+  const nombreHoja = normalizarTextoTrim(m[CONFIG_KEYS.HOJA_CALENDARIOS]) || "Calendarios";
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const hoja = ss.getSheetByName(nombreHoja);
+  const mapa = {};
+  
+  if (!hoja) return mapa;
+  const lastRow = hoja.getLastRow();
+  if (lastRow < 2) return mapa;
+  
+  const valores = hoja.getRange(2, 1, lastRow - 1, 3).getValues();
+  for (let i = 0; i < valores.length; i++) {
+    const codigo = normalizarTextoTrim(valores[i][0]);
+    const nombre = normalizarTextoTrim(valores[i][1]);
+    const calendarId = normalizarTextoTrim(valores[i][2]);
+    if (codigo && calendarId) {
+      mapa[codigo] = { nombre: nombre, calendarId: calendarId };
+    }
+  }
+  return mapa;
+}
+
+function obtenerCalendarioCompartidoPorCodigo_(codigoProyecto) {
+  const calendarios = leerCalendariosCompartidos_();
+  const info = calendarios[normalizarTextoTrim(codigoProyecto)];
+  return info ? info.calendarId : null;
+}
+
 function obtenerConfig() {
   const m = leerConfigComoMapa_();
   return {
@@ -126,7 +157,8 @@ function obtenerConfig() {
     hojaCierre: normalizarTextoTrim(m[CONFIG_KEYS.HOJA_CIERRE]) || "Respuestas CIERRE",
     formUrlUpdate: normalizarTextoTrim(m[CONFIG_KEYS.FORM_URL_UPDATE]),
     formUrlCierre: normalizarTextoTrim(m[CONFIG_KEYS.FORM_URL_CIERRE]),
-    formPlaceholderTaskId: normalizarTextoTrim(m[CONFIG_KEYS.FORM_PLACEHOLDER_TASKID]) || "{TASK_ID}"
+    formPlaceholderTaskId: normalizarTextoTrim(m[CONFIG_KEYS.FORM_PLACEHOLDER_TASKID]) || "{TASK_ID}",
+    hojaCalendarios: normalizarTextoTrim(m[CONFIG_KEYS.HOJA_CALENDARIOS]) || "Calendarios"
   };
 }
 
@@ -666,6 +698,22 @@ function procesarCreacion_(sheet, row, idx, config) {
       Logger.log("No se pudo agregar invitado: " + err.message);
     }
   }
+  
+  // Agregar calendario compartido del proyecto como invitado
+  const calendarioProyecto = normalizarTextoTrim(datos.calendarioProyecto);
+  if (calendarioProyecto) {
+    const calendarId = obtenerCalendarioCompartidoPorCodigo_(calendarioProyecto);
+    if (calendarId) {
+      try {
+        evento.addGuest(calendarId);
+        Logger.log("Calendario compartido agregado como invitado: " + calendarId);
+      } catch (err) {
+        Logger.log("No se pudo agregar calendario compartido como invitado: " + err.message);
+      }
+    } else {
+      Logger.log("No se encontró ID de calendario para el código: " + calendarioProyecto);
+    }
+  }
 
   // Color
   try {
@@ -908,6 +956,16 @@ function obtenerDatosBase_(sheet, row, requiereFecha) {
     "Fecha de entrega estimada",
     "Entrega estimada"
   ], null);
+  
+  // Calendario del Proyecto (nuevo campo)
+  const calendarioProyecto = normalizarTextoTrim(obtenerValorPorHeaders_(sheet, row, [
+    "Calendario del Proyecto",
+    "Calendario del proyecto",
+    "Calendario proyecto",
+    "Calendar proyecto",
+    "Proyecto calendario",
+    "CALENDARIO_PROYECTO"
+  ], null));
 
   if (requiereFecha && !fechaEvento) {
     throw new Error(
@@ -922,6 +980,7 @@ function obtenerDatosBase_(sheet, row, requiereFecha) {
     fechaEvento,
     fechaEntregaEstimada,
     codigoProyecto,
+    calendarioProyecto,
     concepto,
     tipoActividad,
     etapa,
@@ -1230,6 +1289,8 @@ function crearHojaConfigV2() {
     [CONFIG_KEYS.HOJA_UPDATE, "Respuestas UPDATE"],
     [CONFIG_KEYS.HOJA_CIERRE, "Respuestas CIERRE"],
     ["", ""],
+    [CONFIG_KEYS.HOJA_CALENDARIOS, "Calendarios"],
+    ["", ""],
     [CONFIG_KEYS.FORM_PLACEHOLDER_TASKID, "{TASK_ID}"],
     [CONFIG_KEYS.FORM_URL_UPDATE, ""],
     [CONFIG_KEYS.FORM_URL_CIERRE, ""]
@@ -1242,6 +1303,40 @@ function crearHojaConfigV2() {
   hojaConfig.setColumnWidth(2, 600);
 
   Logger.log("Config v2 creada/actualizada");
+}
+
+// CREAR HOJA DE CALENDARIOS COMPARTIDOS
+function crearHojaCalendariosCompartidos() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const config = obtenerConfig();
+  const nombreHoja = config.hojaCalendarios || "Calendarios";
+  
+  let hoja = ss.getSheetByName(nombreHoja);
+  if (!hoja) hoja = ss.insertSheet(nombreHoja);
+  
+  const datos = [
+    ["CODIGO", "NOMBRE", "ID GOOGLE CALENDAR"],
+    ["B0050-BBA", "AERODROMO BALMACEDA", "c_am12prga1kadviqhj0rguqdrls@group.calendar.google.com"],
+    ["B0075-EPE", "EL PEÑON", "c_e16e1ce2ee55c2afc878598eba3476fe3e44564a14b373ecae986bcf533f0988@group.calendar.google.com"],
+    ["B0077-LPR", "LA PRIMAVERA", "c_8f14a40d46191a09e74e1be0d5bbf42dbe71f094c23d1c0e4773bca3931426d9@group.calendar.google.com"],
+    ["B0095-CMF", "CENCOMALL FISA", "c_b9a0f3449895a253cffabf535d3e84512ee6698110f0287009f691326a9bd4bf@group.calendar.google.com"],
+    ["B0074-VLR", "VILLA LA REINA", "c_72915fb3d1a1f53e504b17a2708c1cfe4a37a1da4e70967bba769c4d783e6969@group.calendar.google.com"],
+    ["B0087-MA1", "MARISCAL 1", "c_5ffc6a2043a7bb950aa297a10d3f9a11898eae13e9cd9d2535799abf8d09bb32@group.calendar.google.com"],
+    ["B0078-LP4", "LA PLATINA 4", "c_19b11f2e671f73d0f0f96607f10716385466843dcda5e5b8f13ce46c0edf6c9d@group.calendar.google.com"],
+    ["B0081-LT3", "LOTE 3", "c_e7104de8a637679b28777f4b29660be04d8fad3db7d2cab91c6064af206e59fa@group.calendar.google.com"],
+    ["A1014-SAN", "MEDIFARMA", "c_2fac26ccb099158180c405410220f7d58568e3d8c792d7616b3d1d4b1c48d5da@group.calendar.google.com"],
+    ["T0006-TDC", "TAREAS DE CALENDARIO", "c_6ae9be3303364d1c773dfbfde85970111b106ecadad589f3273c4661aa112d3d@group.calendar.google.com"]
+  ];
+  
+  hoja.clear();
+  hoja.getRange(1, 1, datos.length, 3).setValues(datos);
+  hoja.getRange("A1:C1").setFontWeight("bold").setBackground("#34a853").setFontColor("#ffffff");
+  hoja.setColumnWidth(1, 120);
+  hoja.setColumnWidth(2, 200);
+  hoja.setColumnWidth(3, 550);
+  hoja.setFrozenRows(1);
+  
+  Logger.log("Hoja de calendarios compartidos creada/actualizada: " + nombreHoja);
 }
 
 // AGREGAR COLUMNAS DE CONTROL
