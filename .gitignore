@@ -1,0 +1,30 @@
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Configuración de IDE/Editores
+.vscode/
+.idea/
+*.sublime-*
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Logs
+*.log
+
+# Archivos de configuración local (si añades credenciales en el futuro)
+config.local.js
+.env
+.env.local
+
+# Node modules (si decides agregar herramientas de desarrollo)
+node_modules/
+
+# Archivos de backup
+backup/
+*.backup
