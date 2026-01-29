@@ -1,111 +1,113 @@
-# 📅 Sistema de Trazabilidad de Tareas - Google Calendar
+# 📅 Calendar BIM Flow - Task Tracking & Coordination System
 
-Sistema automatizado de gestión de tareas que integra Google Forms, Sheets, Calendar y Apps Script para crear, actualizar y cerrar tareas con trazabilidad completa.
+Automated BIM task management system that integrates Google Forms, Sheets, Calendar, and Apps Script to create, update, and close tasks with complete traceability for BIM coordination workflows.
 
-## 🚀 Características
+## 🚀 Features
 
-- ✅ **Creación de tareas** desde Google Forms
-- 📝 **Actualizaciones** con historial completo
-- ✔️ **Cierre de tareas** con registro de finalización
-- 🔗 **Integración automática** con Google Calendar
-- 📊 **Base de datos** en Google Sheets
-- 🎨 **Código de colores** visual para cada tipo de evento
-- 🆔 **Sistema TaskID** único para cada tarea
+- ✅ **Task creation** from Google Forms
+- 📝 **Updates** with complete history tracking
+- ✔️ **Task closure** with completion records
+- 🔗 **Automatic integration** with Google Calendar
+- 📊 **Database** in Google Sheets
+- 🎨 **Visual color coding** for each event type
+- 🆔 **Unique TaskID system** for each task
+- 🏗️ **BIM-focused** workflow and coordination
 
-## 📋 Requisitos
+## 📋 Requirements
 
-- Cuenta de Google (Gmail)
-- Acceso a Google Workspace:
+- Google Account (Gmail)
+- Access to Google Workspace:
   - Google Forms
   - Google Sheets
   - Google Calendar
   - Google Apps Script
 
-## 🛠️ Instalación
+## 🛠️ Installation
 
-Para implementar este sistema en tu cuenta de Google, sigue la guía completa de implementación:
+To implement this system in your Google account, follow the complete implementation guide:
 
-**➡️ [Ver Guía de Implementación Completa](GUIA_IMPLEMENTACION_CALENDARIO.md)**
+**➡️ [View Complete Implementation Guide](GUIA_IMPLEMENTACION_CALENDARIO.md)** *(Spanish)*
 
-La guía incluye:
-1. Configuración de Google Sheets
-2. Creación de formularios
-3. Instalación del código Apps Script
-4. Configuración de triggers
-5. Pruebas del sistema
+The guide includes:
+1. Google Sheets configuration
+2. Form creation
+3. Apps Script code installation
+4. Trigger setup
+5. System testing
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
-├── README.md                           # Este archivo
-├── GUIA_IMPLEMENTACION_CALENDARIO.md   # Guía completa paso a paso
-├── script google calendar.js           # Código principal del sistema
-└── funcion_temporal_update.js          # Función auxiliar para reprocesar updates
+├── README.md                           # This file
+├── GUIA_IMPLEMENTACION_CALENDARIO.md   # Step-by-step guide (Spanish)
+├── src/
+    ├── script google calendar.js       # Main system code
+    └── funcion_temporal_update.js      # Auxiliary function for reprocessing
 ```
 
-## 🎯 ¿Cómo funciona?
+## 🎯 How It Works
 
-1. **Usuario completa formulario** → Se crea registro en Sheet
-2. **Trigger automático** → Apps Script detecta nueva entrada
-3. **Se crea evento** en Google Calendar con información de la tarea
-4. **Se genera TaskID único** que permite hacer seguimiento
-5. **Updates y cierres** se vinculan a la tarea original mediante TaskID
+1. **User completes form** → Record created in Sheet
+2. **Automatic trigger** → Apps Script detects new entry
+3. **Event created** in Google Calendar with task information
+4. **Unique TaskID generated** for tracking
+5. **Updates and closures** linked to original task via TaskID
 
-## 🎨 Código de Colores
+## 🎨 Color Coding
 
-El sistema usa colores para identificar rápidamente el tipo de evento:
+The system uses colors to quickly identify event types:
 
-- 🟦 **Azul**: Tareas nuevas (CREAR)
-- 🟨 **Amarillo**: Actualizaciones (UPDATE)
-- 🟩 **Verde**: Cierres de tareas (CIERRE)
+- 🟦 **Blue**: New tasks (CREATE)
+- 🟨 **Yellow**: Updates (UPDATE)
+- 🟩 **Green**: Task closures (CLOSE)
 
-## 📝 Uso Básico
+## 📝 Basic Usage
 
-### Crear una Tarea
-1. Completa el formulario de "Crear Tarea"
-2. Automáticamente aparecerá en tu calendario
-3. Se generará un TaskID único
+### Create a Task
+1. Complete the "Create Task" form
+2. It will automatically appear in your calendar
+3. A unique TaskID will be generated
 
-### Actualizar una Tarea
-1. Usa el formulario de "Update"
-2. Ingresa el TaskID de la tarea
-3. Se creará un microevento de actualización en el calendario
+### Update a Task
+1. Use the "Update" form
+2. Enter the task's TaskID
+3. An update micro-event will be created in the calendar
 
-### Cerrar una Tarea
-1. Usa el formulario de "Cierre"
-2. Ingresa el TaskID de la tarea
-3. Se marcará como finalizada en el calendario
+### Close a Task
+1. Use the "Close" form
+2. Enter the task's TaskID
+3. It will be marked as completed in the calendar
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-Todos los parámetros del sistema se configuran desde la hoja "Config" del Google Sheet:
+All system parameters are configured from the "Config" sheet in Google Sheets:
 
-- Duración de eventos
-- ID del calendario
-- URLs de formularios
-- Colores de eventos
-- Notificaciones
+- Event duration
+- Calendar ID
+- Form URLs
+- Event colors
+- Notifications
 
-## 🐛 Solución de Problemas
+## 🐛 Troubleshooting
 
-Si los eventos no se crean automáticamente:
-1. Verifica que los triggers estén activos en Apps Script
-2. Revisa los permisos del calendario
-3. Consulta la sección de troubleshooting en la guía de implementación
+If events are not created automatically:
+1. Verify that triggers are active in Apps Script
+2. Check calendar permissions
+3. Consult the troubleshooting section in the implementation guide
 
-## 👤 Usuario Destino
+## 👤 Author
 
-**Email:** db@mi-studio.cl  
-**Fecha de desarrollo:** Enero 2026
+**Developed for BIM coordination workflows**  
+**Date:** January 2026
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto es de uso personal. Desarrollado para gestión de tareas con Google Workspace.
+This is a personal project developed for task management with Google Workspace.
 
-## 🤝 Contribuciones
+## 🤝 Contributing
 
-Este es un proyecto personal, pero si encuentras errores o tienes sugerencias, no dudes en abrir un issue.
+This is a personal project, but if you find bugs or have suggestions, feel free to open an issue.
 
 ---
 
-**Nota:** Este es un proyecto para Google Apps Script. Los archivos `.js` deben copiarse al editor de Google Apps Script (no se ejecutan localmente).
+**Note:** This is a Google Apps Script project. The `.js` files must be copied to the Google Apps Script editor (they don't run locally).
