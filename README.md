@@ -1,113 +1,108 @@
-# 📅 Calendar BIM Flow - Task Tracking & Coordination System
+# Calendar BIM Flow
 
-Automated BIM task management system that integrates Google Forms, Sheets, Calendar, and Apps Script to create, update, and close tasks with complete traceability for BIM coordination workflows.
+Task tracking and coordination system for BIM workflows using Google Workspace tools.
 
-## 🚀 Features
+## Overview
 
-- ✅ **Task creation** from Google Forms
-- 📝 **Updates** with complete history tracking
-- ✔️ **Task closure** with completion records
-- 🔗 **Automatic integration** with Google Calendar
-- 📊 **Database** in Google Sheets
-- 🎨 **Visual color coding** for each event type
-- 🆔 **Unique TaskID system** for each task
-- 🏗️ **BIM-focused** workflow and coordination
+This system automates task management for BIM coordination projects by integrating Google Forms, Sheets, Calendar, and Apps Script. It provides complete traceability for task creation, updates, and closure through a unique TaskID system that links all related events.
 
-## 📋 Requirements
+## Key Features
 
-- Google Account (Gmail)
-- Access to Google Workspace:
+- Task creation from Google Forms with automatic calendar integration
+- Update tracking with complete history and version control
+- Task closure workflow with completion records
+- Unique TaskID system for linking related events
+- Color-coded calendar events for visual task status
+- Automated data persistence in Google Sheets
+- BIM-focused workflow structure
+
+## Requirements
+
+- Google Account with access to:
   - Google Forms
   - Google Sheets
   - Google Calendar
   - Google Apps Script
 
-## 🛠️ Installation
+## Installation
 
-To implement this system in your Google account, follow the complete implementation guide:
+For detailed implementation instructions, see the [complete implementation guide](GUIA_IMPLEMENTACION_CALENDARIO.md) (Spanish).
 
-**➡️ [View Complete Implementation Guide](GUIA_IMPLEMENTACION_CALENDARIO.md)** *(Spanish)*
-
-The guide includes:
+The guide covers:
 1. Google Sheets configuration
-2. Form creation
+2. Form creation and linking
 3. Apps Script code installation
-4. Trigger setup
-5. System testing
+4. Trigger configuration
+5. Testing and validation
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-├── README.md                           # This file
-├── GUIA_IMPLEMENTACION_CALENDARIO.md   # Step-by-step guide (Spanish)
+├── README.md                           
+├── GUIA_IMPLEMENTACION_CALENDARIO.md   
 ├── src/
-    ├── script google calendar.js       # Main system code
-    └── funcion_temporal_update.js      # Auxiliary function for reprocessing
+    ├── script google calendar.js       
+    └── funcion_temporal_update.js      
 ```
 
-## 🎯 How It Works
+## How It Works
 
-1. **User completes form** → Record created in Sheet
-2. **Automatic trigger** → Apps Script detects new entry
-3. **Event created** in Google Calendar with task information
-4. **Unique TaskID generated** for tracking
-5. **Updates and closures** linked to original task via TaskID
+The system follows a simple workflow:
 
-## 🎨 Color Coding
+1. User submits a form (create/update/close)
+2. Apps Script trigger detects the new entry
+3. Script processes the data and creates a calendar event
+4. TaskID links all related events together
+5. Data is stored in Sheets for persistence and reporting
 
-The system uses colors to quickly identify event types:
+## Color Coding
 
-- 🟦 **Blue**: New tasks (CREATE)
-- 🟨 **Yellow**: Updates (UPDATE)
-- 🟩 **Green**: Task closures (CLOSE)
+Calendar events use different colors to indicate their type:
 
-## 📝 Basic Usage
+- **Blue**: New tasks (CREATE)
+- **Yellow**: Updates (UPDATE)
+- **Green**: Task closures (CLOSE)
 
-### Create a Task
-1. Complete the "Create Task" form
-2. It will automatically appear in your calendar
-3. A unique TaskID will be generated
+## Basic Usage
 
-### Update a Task
-1. Use the "Update" form
-2. Enter the task's TaskID
-3. An update micro-event will be created in the calendar
+**Create a Task**
+- Complete the "Create Task" form
+- A calendar event is automatically created
+- A unique TaskID is generated for tracking
 
-### Close a Task
-1. Use the "Close" form
-2. Enter the task's TaskID
-3. It will be marked as completed in the calendar
+**Update a Task**
+- Use the "Update" form with the task's TaskID
+- An update event is created and linked to the original task
 
-## 🔧 Configuration
+**Close a Task**
+- Use the "Close" form with the task's TaskID
+- The task is marked as completed in the calendar
 
-All system parameters are configured from the "Config" sheet in Google Sheets:
+## Configuration
 
-- Event duration
+System parameters are managed in the "Config" sheet:
+
+- Event duration settings
 - Calendar ID
 - Form URLs
 - Event colors
-- Notifications
+- Notification preferences
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-If events are not created automatically:
-1. Verify that triggers are active in Apps Script
-2. Check calendar permissions
-3. Consult the troubleshooting section in the implementation guide
+If events aren't being created automatically:
+1. Check that Apps Script triggers are enabled
+2. Verify calendar permissions
+3. Review the troubleshooting section in the implementation guide
 
-## 👤 Author
+## Development
 
-**Developed for BIM coordination workflows**  
-**Date:** January 2026
+Developed for BIM coordination workflows, January 2026.
 
-## 📄 License
+## License
 
-This is a personal project developed for task management with Google Workspace.
+Personal project for Google Workspace task management.
 
-## 🤝 Contributing
+## Note
 
-This is a personal project, but if you find bugs or have suggestions, feel free to open an issue.
-
----
-
-**Note:** This is a Google Apps Script project. The `.js` files must be copied to the Google Apps Script editor (they don't run locally).
+This is a Google Apps Script project. The JavaScript files need to be copied into the Google Apps Script editor - they cannot be executed locally.
