@@ -1,17 +1,17 @@
-GUÍA COMPLETA: IMPLEMENTACIÓN SISTEMA DE TRAZABILIDAD DE TAREAS
+# GUÍA DE IMPLEMENTACIÓN: SISTEMA DE TRAZABILIDAD DE TAREAS
 
 
 ---
 
-## 📌 ¿QUÉ HACE ESTE SISTEMA?
+## QUÉ HACE ESTE SISTEMA
 
 Este sistema automatiza la gestión de tareas mediante:
-- ✅ Google Forms (para capturar información)
-- ✅ Google Sheets (como base de datos)
-- ✅ Google Calendar (para visualizar y trackear tareas)
-- ✅ Google Apps Script (la lógica/código)
+- Google Forms (para capturar información)
+- Google Sheets (como base de datos)
+- Google Calendar (para visualizar y trackear tareas)
+- Google Apps Script (la lógica/código)
 
-**Funcionalidades principales:**
+Funcionalidades principales:
 1. Crear tareas desde un formulario
 2. Cada tarea genera un evento en Calendar
 3. Hacer updates (actualizaciones) a las tareas
@@ -20,12 +20,12 @@ Este sistema automatiza la gestión de tareas mediante:
 
 ---
 
-## 🎯 FASE 1: CREAR GOOGLE SHEET BASE
+## FASE 1: CREAR GOOGLE SHEET BASE
 
 ### Paso 1.1: Crear el Google Sheet
-1. Ve a [Google Sheets](https://sheets.google.com)
+1. Ve a Google Sheets (https://sheets.google.com)
 2. Crea un nuevo documento
-3. Nómbralo: **"Sistema Trazabilidad Tareas 2026"**
+3. Nómbralo: "Sistema Trazabilidad Tareas 2026"
 
 ### Paso 1.2: Crear la hoja "Config"
 1. Renombra "Hoja 1" → **"Config"**
